@@ -1,0 +1,22 @@
+{
+  "name": "QSC Checker",
+  "short_name": "QSC",
+  "description": "QSCチェック・ランキング・改善管理システム",
+  "start_url": "/home",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0D9488",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 99%;
+    --foreground: 220 20% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 12%;
+    --primary: 174 72% 34%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 25% 96%;
+    --secondary-foreground: 220 20% 20%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 14% 46%;
+    --accent: 174 40% 95%;
+    --accent-foreground: 174 72% 28%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 20% 90%;
+    --input: 214 20% 90%;
+    --ring: 174 72% 34%;
+    --radius: 0.625rem;
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --nav-height: 4rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-noto-sans-jp), "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+      "Yu Gothic UI", Meiryo, sans-serif;
+    font-feature-settings: "palt" 1;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: 0.04em;
+    line-height: 1.35;
+  }
+}
+
+@layer components {
+  .app-frame {
+    @apply relative mx-auto flex h-dvh max-h-dvh w-full max-w-lg flex-col overflow-hidden bg-background;
+  }
+
+  .app-main {
+    @apply flex min-h-0 flex-1 flex-col overflow-hidden;
+    padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .page-fill {
+    @apply flex min-h-0 flex-1 flex-col gap-3 p-4;
+  }
+
+  .page-scroll {
+    @apply flex-1 overflow-y-auto overscroll-y-contain p-4;
+  }
+
+  .page-list-area {
+    @apply min-h-0 flex-1 overflow-y-auto overscroll-y-contain scrollbar-subtle;
+    @apply -mx-4 border-t px-4 py-3;
+    border-color: hsl(var(--border) / 0.5);
+    background-color: hsl(var(--muted) / 0.45);
+  }
+
+  .scrollbar-subtle {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+
+  .scrollbar-subtle::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+
+  .scrollbar-subtle::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 9999px;
+  }
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}

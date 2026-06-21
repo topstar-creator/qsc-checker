@@ -30,6 +30,22 @@ Open [http://localhost:3000](http://localhost:3000)
 | sv@example.com | sv123456 | SV |
 | manager@example.com | manager1 | Store Manager |
 
+## Vercel Deployment
+
+Local SQLite **does not work** on Vercel. Use [Turso](https://turso.tech) (free cloud SQLite).
+
+1. Create a Turso database and token (see [docs/vercel-deploy.md](docs/vercel-deploy.md))
+2. Add these environment variables in Vercel:
+
+| Variable | Required |
+|----------|----------|
+| `TURSO_DATABASE_URL` | Yes |
+| `TURSO_AUTH_TOKEN` | Yes |
+| `JWT_SECRET` | Yes (32+ random chars) |
+| `NEXT_PUBLIC_APP_URL` | Yes (`https://your-app.vercel.app`) |
+
+3. Push to Git — Vercel redeploys automatically. Demo data seeds on first request.
+
 ## Scripts
 
 | Command | Description |
