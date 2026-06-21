@@ -27,13 +27,14 @@ export default function SignInPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.error ?? "ログインに失敗しました");
+        const hint = data.hint ? `（${data.hint}）` : "";
+        setError(`${data.error ?? "ログインに失敗しました"}${hint}`);
         return;
       }
       router.push("/home");
       router.refresh();
     } catch {
-      setError("サーバーに接続できません。開発サーバーが起動しているか確認してください。");
+      setError("サーバーに接続できません。ネットワークまたはVercelの設定を確認してください。");
     } finally {
       setLoading(false);
     }
