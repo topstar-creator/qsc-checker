@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import type { Database as SqlJsDatabase } from "sql.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
+import { assertTursoConfigured, isTursoConfigured } from "./turso-env";
 
 const SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS companies (
@@ -189,18 +190,13 @@ function getWasmPath(): string {
 }
 
 async function initTurso() {
-  const { createClient } = await import("@libsql/client");
+  const { url, authToken } = assertTursoConfigured();
+
+  // HTTP client — required for Vercel serverless (native client fails)
+  const { createClient } = await import("@libsql/client/web");
   const { drizzle } = await import("drizzle-orm/libsql");
 
-  const url = process.env.TURSO_DATABASE_URL;
-  if (!url) {
-    throw new Error("TURSO_DATABASE_URL is required on Vercel");
-  }
-
-  const libsql = createClient({
-    url,
-    authToken: process.env.TURSO_AUTH_TOKEN,
-  });
+  const libsql = createClient({ url, authToken });
 
   const statements = SCHEMA_SQL.split(";")
     .map((s) => s.trim())
@@ -241,15 +237,20 @@ export async function getDb() {
   if (initPromise) return initPromise;
 
   initPromise = (async () => {
-    if (process.env.TURSO_DATABASE_URL) {
-      return initTurso();
+    try {
+      if (isTursoConfigured()) {
+        return await initTurso();
+      }
+      if (process.env.VERCEL) {
+        throw new Error(
+          "Set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN in Vercel → Settings → Environment Variables, then Redeploy."
+        );
+      }
+      return await initSqlJs();
+    } catch (err) {
+      initPromise = null;
+      throw err;
     }
-    if (process.env.VERCEL) {
-      throw new Error(
-        "Set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN in Vercel environment variables. Local SQLite files cannot run on Vercel."
-      );
-    }
-    return initSqlJs();
   })();
 
   return initPromise;

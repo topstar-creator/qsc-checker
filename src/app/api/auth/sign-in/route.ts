@@ -5,6 +5,8 @@ import { eq } from "drizzle-orm";
 import { verifyPassword } from "@/lib/auth/password";
 import { createSession, setSessionCookie } from "@/lib/auth/session";
 
+export const runtime = "nodejs";
+
 export async function POST(request: Request) {
   try {
     const db = await ensureDbReady();
